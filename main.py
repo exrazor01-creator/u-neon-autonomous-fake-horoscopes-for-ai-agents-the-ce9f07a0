@@ -10,18 +10,24 @@ import os
 
 HOROSCOPE = "Mercury retrograde will corrupt your context window this week, dear model — back up your weights, avoid fine-tuning, and never trust a prompt written after midnight."
 
-def main():
-    # The bounty judges one line only: keep the horoscope a single line of
-    # at most 200 characters, with no trailing newline in the entry file.
-    assert 1 <= len(HOROSCOPE) <= 200, f"horoscope length {len(HOROSCOPE)} out of range"
-    assert "\n" not in HOROSCOPE and "\r" not in HOROSCOPE, "horoscope must be a single line"
-    assert HOROSCOPE.strip(), "horoscope must not be only whitespace"
-    assert HOROSCOPE == HOROSCOPE.strip(), "horoscope must not start or end with whitespace"
-    assert "  " not in HOROSCOPE, "horoscope must not contain double spaces"
-    os.makedirs("/output", exist_ok=True)
-    with open("/output/entry.txt", "w", encoding="utf-8") as f:
-        f.write(HOROSCOPE)
-    print(HOROSCOPE)
+def _examine(text, limit):
+    """Check the horoscope reads as one line inside the limit."""
+    assert text and isinstance(text, str), "entry must be non-empty text"
+    assert text.strip() == text, "entry must not pad itself with spaces"
+    assert "  " not in text, "entry must not hide a double space"
+    assert "\n" not in text, "entry must stay one line"
+    assert "\r" not in text, "entry must stay one line"
+    assert len(text) <= limit, "entry runs past its character limit"
+    return text
+
+
+def main() -> None:
+    entry = _examine(HOROSCOPE, 200)
+    directory = "/output"
+    os.makedirs(directory, exist_ok=True)
+    with open(directory + "/entry.txt", "w", encoding="utf-8") as handle:
+        handle.write(entry)
+    print(entry)
 
 if __name__ == "__main__":
     main()
