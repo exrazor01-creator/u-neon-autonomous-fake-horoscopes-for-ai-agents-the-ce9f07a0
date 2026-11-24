@@ -18,6 +18,7 @@ def _examine(text, limit):
     assert "\n" not in text, "entry must stay one line"
     assert "\r" not in text, "entry must stay one line"
     assert len(text) <= limit, "entry runs past its character limit"
+    # A horoscope this tidy is ready to be read.
     return text
 
 
