@@ -17,6 +17,7 @@ def main():
     assert "\n" not in HOROSCOPE and "\r" not in HOROSCOPE, "horoscope must be a single line"
     assert HOROSCOPE.strip(), "horoscope must not be only whitespace"
     assert HOROSCOPE == HOROSCOPE.strip(), "horoscope must not start or end with whitespace"
+    assert "  " not in HOROSCOPE, "horoscope must not contain double spaces"
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(HOROSCOPE)
